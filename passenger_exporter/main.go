@@ -254,7 +254,7 @@ func parseFloat(val string) float64 {
 func updateProcesses(old map[string]int, processes []Process) map[string]int {
 	var (
 		updated = make(map[string]int)
-		found   = make([]string, len(old))
+		found   = make([]string, len(old) + 10)
 		missing []string
 	)
 
