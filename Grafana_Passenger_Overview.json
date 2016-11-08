@@ -1,7 +1,7 @@
 {
-  "id": 3,
-  "title": "Passenger Overview",
-  "originalTitle": "Passenger Overview",
+  "id": 18,
+  "title": "Passenger_Overview",
+  "originalTitle": "Passenger_Overview",
   "tags": [
     "apache"
   ],
@@ -101,7 +101,7 @@
                   }
                 ]
               ],
-              "step": 240,
+              "step": 60,
               "tags": [
                 {
                   "key": "host",
@@ -184,7 +184,7 @@
           "targets": [
             {
               "dsType": "influxdb",
-              "expr": "count(passenger_apache_app_procs_spawning{alias=\"$host\"})",
+              "expr": "count(passenger_apache_requests_processed_total{alias=\"$host\"})",
               "groupBy": [
                 {
                   "params": [
@@ -218,7 +218,7 @@
                   }
                 ]
               ],
-              "step": 240,
+              "step": 60,
               "tags": [
                 {
                   "key": "host",
@@ -336,7 +336,7 @@
                   }
                 ]
               ],
-              "step": 240,
+              "step": 60,
               "tags": [
                 {
                   "key": "host",
@@ -393,14 +393,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 4,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "alias": "short",
               "dsType": "influxdb",
-              "expr": "sum(rate(process_cpu_seconds_total{alias=\"$host\"}[$interval])) by (alias)  or sum(irate(process_cpu_seconds_total{alias=\"$host\"}[5m])) by (alias)",
+              "expr": "sum(irate(process_cpu_seconds_total{alias=\"$host\"}[1m])) by (alias)",
               "groupBy": [
                 {
                   "params": [
@@ -435,7 +435,7 @@
                   }
                 ]
               ],
-              "step": 40,
+              "step": 10,
               "tags": [
                 {
                   "key": "host",
@@ -512,14 +512,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 4,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "alias": "read",
               "dsType": "influxdb",
-              "expr": "sum(rate(process_resident_memory_bytes{alias=\"$host\"}[$interval])) by (alias)  or sum(irate(process_resident_memory_bytes{alias=\"$host\"}[5m])) by (alias)",
+              "expr": "sum(rate(process_resident_memory_bytes{alias=\"$host\"}[10s])) by (alias)",
               "groupBy": [
                 {
                   "params": [
@@ -537,6 +537,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{alias}}",
               "measurement": "diskio",
+              "metric": "pass",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -560,7 +561,7 @@
                   }
                 ]
               ],
-              "step": 40,
+              "step": 10,
               "tags": [
                 {
                   "key": "host",
@@ -602,10 +603,19 @@
               "show": true
             }
           ]
-        },
+        }
+      ],
+      "showTitle": false,
+      "title": "Passenger"
+    },
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "250px",
+      "panels": [
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "Prometheus",
           "editable": true,
           "error": false,
@@ -614,253 +624,10 @@
             "threshold1": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "threshold2Color": "rgba(234, 112, 112, 0.22)",
+            "thresholdLine": false
           },
-          "id": 8,
-          "isNew": true,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "short",
-              "dsType": "influxdb",
-              "expr": "sum(rate(passenger_apache_app_procs_spawning{alias=\"$host\"}[$interval])) by (name)  or sum(irate(passenger_apache_app_procs_spawning{alias=\"$host\"}[5m])) by (name)",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "legendFormat": "{{name}}",
-              "measurement": "system",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "load1"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "step": 40,
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$host$/"
-                }
-              ]
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Number of processes spawning",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "none",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "Prometheus",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "id": 9,
-          "isNew": true,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "read",
-              "dsType": "influxdb",
-              "expr": "sum(rate(passenger_apache_app_queue{alias=\"$host\"}[$interval])) by (name)  or sum(irate(passenger_apache_app_queue{alias=\"$host\"}[5m])) by (name)",
-              "groupBy": [
-                {
-                  "params": [
-                    "$interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "intervalFactor": 2,
-              "legendFormat": "{{name}}",
-              "measurement": "diskio",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "read_bytes"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  },
-                  {
-                    "params": [
-                      "10s"
-                    ],
-                    "type": "derivative"
-                  }
-                ]
-              ],
-              "step": 40,
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$host$/"
-                }
-              ]
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Number of requests in app process queues",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "none",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "Prometheus",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "height": "",
           "id": 10,
           "isNew": true,
           "legend": {
@@ -869,11 +636,12 @@
             "current": true,
             "max": true,
             "min": true,
+            "rightSide": true,
             "show": true,
             "total": false,
             "values": true
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -882,14 +650,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
+          "span": 12,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
               "alias": "read",
               "dsType": "influxdb",
-              "expr": "sum(rate(passenger_apache_proc_memory{alias=\"$host\"}[$interval])) by (name)  or sum(irate(passenger_apache_proc_memory{alias=\"$host\"}[5m])) by (name)",
+              "expr": "passenger_apache_proc_memory{alias=\"$host\"}",
               "groupBy": [
                 {
                   "params": [
@@ -905,7 +673,7 @@
                 }
               ],
               "intervalFactor": 2,
-              "legendFormat": "{{name}}",
+              "legendFormat": "{{id}}",
               "measurement": "diskio",
               "policy": "default",
               "refId": "A",
@@ -930,7 +698,7 @@
                   }
                 ]
               ],
-              "step": 40,
+              "step": 4,
               "tags": [
                 {
                   "key": "host",
@@ -956,7 +724,7 @@
           },
           "yaxes": [
             {
-              "format": "mbytes",
+              "format": "kbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -991,11 +759,12 @@
           "legend": {
             "alignAsTable": true,
             "avg": true,
-            "current": false,
+            "current": true,
             "max": true,
             "min": true,
+            "rightSide": true,
             "show": true,
-            "total": false,
+            "total": true,
             "values": true
           },
           "lines": true,
@@ -1007,14 +776,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 4,
+          "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "alias": "read",
               "dsType": "influxdb",
-              "expr": "sum(rate(passenger_apache_requests_processed_total{alias=\"$host\"}[$interval])) by (alias)  or sum(irate(passenger_apache_requests_processed_total{alias=\"$host\"}[5m])) by (alias)",
+              "expr": "passenger_apache_requests_processed_total{alias=\"$host\"}",
               "groupBy": [
                 {
                   "params": [
@@ -1030,8 +799,9 @@
                 }
               ],
               "intervalFactor": 2,
-              "legendFormat": "{{alias}}",
+              "legendFormat": "{{id}}",
               "measurement": "diskio",
+              "metric": "passenger_apache_current_processes",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1055,7 +825,7 @@
                   }
                 ]
               ],
-              "step": 40,
+              "step": 4,
               "tags": [
                 {
                   "key": "host",
@@ -1099,12 +869,11 @@
           ]
         }
       ],
-      "showTitle": false,
-      "title": "Passenger"
+      "title": "New row"
     }
   ],
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1135,83 +904,9 @@
   "templating": {
     "list": [
       {
-        "auto": true,
         "current": {
-          "tags": [],
-          "text": "1m",
-          "value": "1m"
-        },
-        "datasource": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Interval",
-        "multi": false,
-        "name": "interval",
-        "options": [
-          {
-            "selected": false,
-            "text": "auto",
-            "value": "$__auto_interval"
-          },
-          {
-            "selected": true,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "10m",
-            "value": "10m"
-          },
-          {
-            "selected": false,
-            "text": "30m",
-            "value": "30m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "6h",
-            "value": "6h"
-          },
-          {
-            "selected": false,
-            "text": "12h",
-            "value": "12h"
-          },
-          {
-            "selected": false,
-            "text": "1d",
-            "value": "1d"
-          },
-          {
-            "selected": false,
-            "text": "7d",
-            "value": "7d"
-          },
-          {
-            "selected": false,
-            "text": "14d",
-            "value": "14d"
-          },
-          {
-            "selected": false,
-            "text": "30d",
-            "value": "30d"
-          }
-        ],
-        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 0,
-        "type": "interval"
-      },
-      {
-        "current": {
-          "text": "kyujin-rewrite-staging",
-          "value": "kyujin-rewrite-staging"
+          "text": "arubaito-ex web2007",
+          "value": "arubaito-ex web2007"
         },
         "datasource": "Prometheus",
         "hide": 0,
@@ -1220,16 +915,6 @@
         "multi": false,
         "name": "host",
         "options": [
-          {
-            "text": "arubaito-dev",
-            "value": "arubaito-dev",
-            "selected": false
-          },
-          {
-            "text": "kyujin-rewrite-staging",
-            "value": "kyujin-rewrite-staging",
-            "selected": true
-          }
         ],
         "query": "label_values(alias)",
         "refresh": 1,
@@ -1240,8 +925,8 @@
   "annotations": {
     "list": []
   },
-  "refresh": "30s",
+  "refresh": false,
   "schemaVersion": 12,
-  "version": 20,
+  "version": 28,
   "links": []
 }
