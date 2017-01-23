@@ -905,8 +905,6 @@
     "list": [
       {
         "current": {
-          "text": "arubaito-ex web2007",
-          "value": "arubaito-ex web2007"
         },
         "datasource": "Prometheus",
         "hide": 0,
